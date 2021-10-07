@@ -7,21 +7,47 @@
         v-model:value="item.value"
         :placeholder="item.placeholder"
         :validation="item.validation"
+        @is_valid="is_valid_input(i, $event)"
       />
     </div>
-    <button @click="log_info">teste</button>
+    <div>
+      <Select
+        title="Estado*"
+        :list="states"
+        @selected="select_state"
+        :selected_option="selected_state"
+      />
+      <Select
+        title="Cidade*"
+        :list="cities[selected_state]"
+        @selected="select_city"
+        :selected_option="selected_city"
+      />
+    </div>
+    <button @click="save" :disabled="validate_inputs">PRÓXIMO</button>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { computed, defineComponent, onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
 
 import Input from "@/components/Input.vue";
+import Select from "@/components/Select.vue";
 
 export default defineComponent({
   name: "Professional",
-  components: { Input },
+  components: { Input, Select },
   setup() {
+    interface personal {
+      name: string;
+      document: string;
+      phone: string;
+      state: string;
+      city: string;
+    }
+    const router = useRouter();
+
     const inputs_type = ref([
       {
         type: "text",
@@ -29,6 +55,7 @@ export default defineComponent({
         value: "",
         validation: "name",
         placeholder: "Digite o nome completo",
+        is_valid: false,
       },
       {
         type: "text",
@@ -36,6 +63,7 @@ export default defineComponent({
         value: "",
         validation: "cpf",
         placeholder: "Digite um CPF",
+        is_valid: false,
       },
       {
         type: "text",
@@ -43,14 +71,89 @@ export default defineComponent({
         value: "",
         validation: "phone",
         placeholder: "(00) 0 0000-0000",
+        is_valid: false,
       },
     ]);
 
-    const log_info = () => {
-      console.log(inputs_type);
+    const states = ref(["Paraná", "Rio Grande do Sul", "Santa Cataria"]);
+
+    const cities = ref({
+      Paraná: ["Londrina", "Maringá"],
+      "Rio Grande do Sul": ["Pelotas", "Porto Alegre"],
+      "Santa Cataria": ["Florianópolis", "Joinville"],
+    });
+
+    const selected_state = ref("");
+    const selected_city = ref("");
+
+    const select_state = (state: string) => {
+      selected_state.value = state;
     };
 
-    return { inputs_type, log_info };
+    const select_city = (city: string) => {
+      selected_city.value = city;
+    };
+
+    const is_valid_input = (index: number, is_valid: boolean) => {
+      inputs_type.value[index].is_valid = is_valid;
+    };
+
+    const validate_inputs = computed(() => {
+      const valid = inputs_type.value.map((input) => {
+        return input.is_valid;
+      });
+
+      return !(
+        valid.includes(false) &&
+        selected_state.value.length > 0 &&
+        selected_city.value.length > 0
+      );
+    });
+
+    const save = () => {
+      const data = {
+        name: inputs_type.value[0].value,
+        document: inputs_type.value[1].value,
+        phone: inputs_type.value[2].value,
+        state: selected_state.value,
+        city: selected_city.value,
+      };
+
+      localStorage.setItem("personal_data", JSON.stringify(data));
+
+      router.push({ name: "attendance" });
+    };
+
+    const set_values = (personal_data: personal) => {
+      inputs_type.value[0].value = personal_data.name;
+      inputs_type.value[1].value = personal_data.document;
+      inputs_type.value[2].value = personal_data.phone;
+      selected_state.value = personal_data.state;
+      selected_city.value = personal_data.city;
+    };
+
+    const personal_data = JSON.parse(
+      localStorage.getItem("personal_data") || ""
+    );
+
+    onMounted(() => {
+      if (personal_data.name) {
+        set_values(personal_data);
+      }
+    });
+
+    return {
+      inputs_type,
+      states,
+      cities,
+      selected_state,
+      selected_city,
+      select_state,
+      select_city,
+      is_valid_input,
+      validate_inputs,
+      save,
+    };
   },
 });
 </script>

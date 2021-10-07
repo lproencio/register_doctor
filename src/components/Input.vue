@@ -6,7 +6,7 @@
       :value="value"
       @input="onInput"
       :placeholder="placeholder"
-      :class="{ 'border-danger': error }"
+      :class="[{ 'border-danger': error }, { 'border-danger': !is_valid }]"
       v-maska="type_mask[validation]"
     />
   </div>
@@ -34,6 +34,7 @@ export default defineComponent({
     }
 
     const error = ref<boolean>(false);
+    const is_valid = ref<boolean>(true);
     const type_mask = ref<mask>({
       cpf: "###.###.###-##",
       phone: "(##) # ####-####",
@@ -46,6 +47,7 @@ export default defineComponent({
 
       if (value.length > 3 && value.length <= 48) {
         error.value = false;
+        emit("is_valid", true);
       } else {
         error.value = true;
       }
@@ -60,8 +62,17 @@ export default defineComponent({
         .replace("-", "")
         .replace(".", "");
 
-      const is_valid = validator_cpf(remove_symbol);
-      console.log(is_valid);
+      is_valid.value = validator_cpf(remove_symbol);
+      emit("is_valid", is_valid.value);
+    };
+
+    const validate_phone = (value: string | undefined) => {
+      if (!value) {
+        return;
+      }
+      const is_valid = value.length >= 16;
+
+      emit("is_valid", is_valid);
     };
 
     const validate = (type: string | undefined, value: string | undefined) => {
@@ -71,6 +82,10 @@ export default defineComponent({
       if (type === "cpf") {
         validate_cpf(value);
       }
+
+      if (type === "phone") {
+        validate_phone(value);
+      }
     };
 
     const onInput = (e: { target: HTMLInputElement }) => {
@@ -79,7 +94,7 @@ export default defineComponent({
       validate(props.validation, e.target.value);
     };
 
-    return { error, onInput, type_mask };
+    return { error, onInput, type_mask, is_valid };
   },
 });
 </script>
