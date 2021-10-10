@@ -1,6 +1,7 @@
 <template>
   <div class="professional p-4">
     <h1>Sobre o profissional</h1>
+    <h2>Detalhes do Professional</h2>
     <div v-for="(item, i) in inputs_type" :key="i">
       <Input
         :type="item.type"
@@ -141,7 +142,7 @@ export default defineComponent({
     };
 
     const personal_data = JSON.parse(
-      localStorage.getItem("personal_data") || ""
+      localStorage.getItem("personal_data") || "{}"
     );
 
     onMounted(() => {

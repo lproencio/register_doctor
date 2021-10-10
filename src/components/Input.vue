@@ -64,7 +64,7 @@ export default defineComponent({
         .replace(".", "");
 
       is_valid.value = validator_cpf(remove_symbol);
-      emit("is_valid", is_valid.value);
+      emit("is_valid", !is_valid.value);
     };
 
     const validate_phone = (value: string | undefined) => {

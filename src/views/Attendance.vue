@@ -34,7 +34,8 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref, watch } from "vue";
+import { computed, defineComponent, onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
 
 import Select from "@/components/Select.vue";
 import Progress from "@/components/Progress.vue";
@@ -53,6 +54,8 @@ export default defineComponent({
       type: string;
       options: number | null;
     }
+
+    const router = useRouter();
 
     const speciality = ref([
       "Cardiologia",
@@ -125,6 +128,8 @@ export default defineComponent({
       };
 
       localStorage.setItem("attendance_data", JSON.stringify(attendance_data));
+
+      router.push({ name: "resume" });
     };
 
     const is_selected = computed(() => {
@@ -136,7 +141,7 @@ export default defineComponent({
         return [];
       }
 
-      const payment = attendance_data.payment.map((pay: any) => {
+      const payment = attendance_data.payment.map((pay: payment) => {
         return pay.type;
       });
 

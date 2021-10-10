@@ -31,6 +31,7 @@ p {
   display: flex;
   justify-content: center;
   align-items: flex-end;
+  min-height: 100vh;
 }
 
 .professional {
@@ -176,4 +177,60 @@ button[disabled] {
 
 .type_payment .portion div label {
   margin-left: 10px;
+}
+
+.resume {
+  display: flex;
+  flex-direction: column;
+}
+
+.resume label {
+  font-weight: 700;
+}
+
+.resume p {
+  font-size: 18px;
+}
+
+.resume .confirm {
+  background-color: #ffe766;
+  border-color: #fbde40;
+  color: #000;
+}
+
+.resume .edit {
+  background-color: transparent;
+  border-color: transparent;
+  color: #483698;
+  font-weight: 700;
+}
+
+.alert {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.alert div {
+  background-color: #fff;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  border-radius: 8px;
+}
+
+.alert div svg {
+  transform: scale(2);
+  margin-top: 40px;
 }
