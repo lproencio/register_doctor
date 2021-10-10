@@ -1,7 +1,8 @@
 <template>
   <div class="input">
-    <label for="">{{ label }}</label>
+    <label for="" class="mt-3 pb-1">{{ label }}</label>
     <input
+      class="col-12"
       :type="type"
       :value="value"
       @input="onInput"

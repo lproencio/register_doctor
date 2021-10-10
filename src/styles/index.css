@@ -8,4 +8,168 @@ input,
 textarea,
 button {
   outline: none;
+  height: 40px;
+  background-color: #fff;
+  border-radius: 4px;
+  border: #483698 1px solid;
+  padding: 5px;
+  text-align: left;
+}
+
+h1,
+button {
+  font-family: "Comfortaa";
+}
+
+label,
+p {
+  font-family: "Opens Sans";
+}
+
+.main {
+  background-color: #ffe766;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.professional {
+  background-color: #fff;
+  border-top-right-radius: 30px;
+  border-top-left-radius: 30px;
+  margin-top: 60px;
+}
+
+.professional h1 {
+  color: #483698;
+  font-weight: bold;
+}
+
+.professional label {
+  font-weight: semibold;
+}
+
+.select {
+  position: relative;
+}
+
+.select .options {
+  position: absolute;
+  background-color: #fff;
+  z-index: 10;
+  width: 100%;
+  border: #f9f9f9 solid 3px;
+  box-shadow: 0 0 5px #b9b9b9;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.select .options p {
+  padding: 10px;
+  margin: 0;
+}
+
+.container-progress {
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  position: relative;
+  margin-top: 40px;
+}
+
+.container-progress p {
+  color: #483698;
+  font-weight: bold;
+  margin-bottom: 0;
+  padding-left: 10px;
+  padding-top: 2px;
+  font-size: 16px;
+}
+
+.progress {
+  background-color: #f9f9f9;
+  position: relative;
+  height: 30px;
+  border-radius: 4px;
+  border: 1px solid #ebebeb;
+}
+
+.progress div {
+  position: absolute;
+  background-color: #483698;
+  height: 30px;
+}
+
+button {
+  margin-top: 30px;
+}
+
+.professional button {
+  text-align: center;
+  color: #fff;
+  font-weight: semibold;
+  background-color: #483698;
+  border-radius: 16px;
+}
+
+.input_value {
+  display: flex;
+  align-items: center;
+}
+
+.input_value div {
+  background-color: #483698;
+  color: #fff;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.input_value input {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.type_payment {
+  background-color: #f9f9f9;
+  box-shadow: 0 0 5px #b9b9b9;
+  padding: 10px 20px;
+}
+
+.type_payment .top {
+  display: flex;
+  align-items: center;
+}
+
+.type_payment .top input {
+  height: 15px;
+  width: 15px;
+}
+
+.type_payment .top label {
+  margin-left: 30px;
+}
+
+.type_payment .portion {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.type_payment .portion p {
+  margin: 0;
+  margin-top: 20px;
+  padding-left: 17%;
+}
+
+.type_payment .portion div {
+  display: flex;
+  padding-left: 17%;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.type_payment .portion div label {
+  margin-left: 10px;
 }

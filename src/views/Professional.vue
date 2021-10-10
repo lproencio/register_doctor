@@ -1,5 +1,6 @@
 <template>
-  <div class="about">
+  <div class="professional p-4">
+    <h1>Sobre o profissional</h1>
     <div v-for="(item, i) in inputs_type" :key="i">
       <Input
         :type="item.type"
@@ -10,21 +11,26 @@
         @is_valid="is_valid_input(i, $event)"
       />
     </div>
-    <div>
+    <div class="region d-flex">
       <Select
         title="Estado*"
         :list="states"
         @selected="select_state"
         :selected_option="selected_state"
+        class="col-6 pe-2"
       />
       <Select
+        class="col-6 ps-2"
         title="Cidade*"
         :list="cities[selected_state]"
         @selected="select_city"
         :selected_option="selected_city"
       />
     </div>
-    <button @click="save" :disabled="validate_inputs">PRÓXIMO</button>
+    <Progress :current="1" :total="2" />
+    <button class="col-12" @click="save" :disabled="validate_inputs">
+      PRÓXIMO
+    </button>
   </div>
 </template>
 
@@ -34,10 +40,11 @@ import { useRouter } from "vue-router";
 
 import Input from "@/components/Input.vue";
 import Select from "@/components/Select.vue";
+import Progress from "@/components/Progress.vue";
 
 export default defineComponent({
   name: "Professional",
-  components: { Input, Select },
+  components: { Input, Select, Progress },
   setup() {
     interface personal {
       name: string;
@@ -88,6 +95,7 @@ export default defineComponent({
 
     const select_state = (state: string) => {
       selected_state.value = state;
+      selected_city.value = "";
     };
 
     const select_city = (city: string) => {
