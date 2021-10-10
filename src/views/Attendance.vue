@@ -5,29 +5,36 @@
     <Select
       title="Especialidade principal*"
       :list="speciality"
-      @selected="selected_speciality"
-      :selected_option="selected_speciality"
+      @selected="select"
+      :selected_option="select_speciality"
       class="col-12"
     />
     <InputValue
       class="mt-4"
       title="Informe o preço da sonsulta*"
       v-model:value="consult_value"
+      @update_value="update_value"
     />
     <div class="mt-4" v-for="(payment, i) in payment_type" :key="i">
       <TypePayment
         :title="payment"
         :value="payment"
         :options="payment_options[payment]"
+        :is_selected="is_selected"
+        @add_payment="add_payment"
+        @remove_payment="remove_payment"
+        @add_parcel="add_parcel"
       />
     </div>
     <Progress :current="2" :total="2" />
-    <button class="col-12" @click="save">PRÓXIMO</button>
+    <button class="col-12" @click="save" :disabled="valid_button">
+      PRÓXIMO
+    </button>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { computed, defineComponent, onMounted, ref, watch } from "vue";
 
 import Select from "@/components/Select.vue";
 import Progress from "@/components/Progress.vue";
@@ -42,6 +49,11 @@ export default defineComponent({
     TypePayment,
   },
   setup() {
+    interface payment {
+      type: string;
+      options: number | null;
+    }
+
     const speciality = ref([
       "Cardiologia",
       "Dermatologia",
@@ -51,7 +63,7 @@ export default defineComponent({
       "Urologia",
     ]);
 
-    const payment_type = ref(["Em dinheiro", "Pix", "Cartão de crédito"]);
+    const payment_type = ref<Array<string>>([]);
     const payment_options = ref({
       "Em dinheiro": [],
       Pix: [],
@@ -62,15 +74,102 @@ export default defineComponent({
       ],
     });
 
-    const selected_speciality = ref<string>("");
+    const select_speciality = ref<string>("");
     const consult_value = ref<string>("");
+    const selected_payments = ref<Array<payment>>([]);
+
+    const select = (speciality: string) => {
+      select_speciality.value = speciality;
+    };
+
+    const update_value = (value: string) => {
+      consult_value.value = value;
+    };
+
+    const add_payment = (payment: payment) => {
+      selected_payments.value.push(payment);
+    };
+
+    const remove_payment = (type: string) => {
+      const filter_payment = selected_payments.value.filter((payment) => {
+        return payment.type !== type;
+      });
+
+      selected_payments.value = filter_payment;
+    };
+
+    const add_parcel = (type: number) => {
+      const add = selected_payments.value.map((payment) => {
+        if (payment.type === "Cartão de crédito") {
+          payment.options = type;
+        }
+        return payment;
+      });
+
+      selected_payments.value = add;
+    };
+
+    const valid_button = computed(() => {
+      return !(
+        select_speciality.value.length > 0 &&
+        consult_value.value.length > 0 &&
+        selected_payments.value.length > 0
+      );
+    });
+
+    const save = () => {
+      const attendance_data = {
+        speciality: select_speciality.value,
+        value: consult_value.value,
+        payment: selected_payments.value,
+      };
+
+      localStorage.setItem("attendance_data", JSON.stringify(attendance_data));
+    };
+
+    const is_selected = computed(() => {
+      const attendance_data = JSON.parse(
+        localStorage.getItem("attendance_data") ?? "{}"
+      );
+
+      if (!attendance_data.speciality) {
+        return [];
+      }
+
+      const payment = attendance_data.payment.map((pay: any) => {
+        return pay.type;
+      });
+
+      return payment;
+    });
+
+    onMounted(() => {
+      const attendance_data = JSON.parse(
+        localStorage.getItem("attendance_data") ?? "{}"
+      );
+
+      if (attendance_data.speciality) {
+        select_speciality.value = attendance_data.speciality;
+        consult_value.value = attendance_data.value;
+        selected_payments.value = attendance_data.payment;
+      }
+      payment_type.value = ["Em dinheiro", "Pix", "Cartão de crédito"];
+    });
 
     return {
       speciality,
-      selected_speciality,
+      select_speciality,
+      select,
       consult_value,
+      update_value,
       payment_type,
       payment_options,
+      add_payment,
+      remove_payment,
+      add_parcel,
+      save,
+      valid_button,
+      is_selected,
     };
   },
 });
