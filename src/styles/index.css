@@ -30,7 +30,6 @@ p {
   background-color: #ffe766;
   display: flex;
   justify-content: center;
-  align-items: flex-end;
   min-height: 100vh;
 }
 
@@ -233,4 +232,13 @@ button[disabled] {
 .alert div svg {
   transform: scale(2);
   margin-top: 40px;
+}
+
+@media (min-width: 768px) {
+  .professional {
+    margin-bottom: 60px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+  }
 }

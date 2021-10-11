@@ -1,35 +1,43 @@
 <template>
-  <div class="professional attendance p-4 col-12">
-    <h1>Sobre o atendimento</h1>
-    <h2>Detalhes do atendimento</h2>
-    <Select
-      title="Especialidade principal*"
-      :list="speciality"
-      @selected="select"
-      :selected_option="select_speciality"
-      class="col-12"
-    />
-    <InputValue
-      class="mt-4"
-      title="Informe o preço da sonsulta*"
-      v-model:value="consult_value"
-      @update_value="update_value"
-    />
-    <div class="mt-4" v-for="(payment, i) in payment_type" :key="i">
-      <TypePayment
-        :title="payment"
-        :value="payment"
-        :options="payment_options[payment]"
-        :is_selected="is_selected"
-        @add_payment="add_payment"
-        @remove_payment="remove_payment"
-        @add_parcel="add_parcel"
+  <div class="professional attendance p-4 col-12 col-lg-10">
+    <div class="col-lg-5">
+      <h1>Sobre o atendimento</h1>
+      <h2>Detalhes do atendimento</h2>
+      <Select
+        title="Especialidade principal*"
+        :list="speciality"
+        @selected="select"
+        :selected_option="select_speciality"
+        class="col-12"
       />
+      <InputValue
+        class="mt-4"
+        title="Informe o preço da sonsulta*"
+        v-model:value="consult_value"
+        @update_value="update_value"
+      />
+      <div class="mt-4" v-for="(payment, i) in payment_type" :key="i">
+        <TypePayment
+          :title="payment"
+          :value="payment"
+          :options="payment_options[payment]"
+          :is_selected="is_selected"
+          @add_payment="add_payment"
+          @remove_payment="remove_payment"
+          @add_parcel="add_parcel"
+        />
+      </div>
+      <Progress :current="2" :total="2" />
+      <button class="col-12" @click="save" :disabled="valid_button">
+        PRÓXIMO
+      </button>
     </div>
-    <Progress :current="2" :total="2" />
-    <button class="col-12" @click="save" :disabled="valid_button">
-      PRÓXIMO
-    </button>
+
+    <div
+      class="d-none col-7 d-lg-flex justify-content-center align-items-center"
+    >
+      <img :src="require('@/assets/desktop-pagina-2.png')" alt="" />
+    </div>
   </div>
 </template>
 

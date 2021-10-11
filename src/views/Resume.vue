@@ -1,34 +1,44 @@
 <template>
-  <div class="professional resume p-4 col-12">
-    <h1 class="mb-4">Revisão do cadastro</h1>
+  <div class="professional resume p-4 col-12 col-lg-10 flex-lg-row">
+    <div class="col-lg-5">
+      <h1 class="mb-4">Revisão do cadastro</h1>
 
-    <div v-for="(item, i) in personal_show" :key="i">
-      <label for="">{{ item.title }}</label>
-      <p v-if="item.type !== 'state'">{{ professional_data[item.type] }}</p>
-      <p v-else>
-        {{
-          professional_data[item.type] + " - " + professional_data[item.type_2]
-        }}
-      </p>
+      <div v-for="(item, i) in personal_show" :key="i">
+        <label for="">{{ item.title }}</label>
+        <p v-if="item.type !== 'state'">{{ professional_data[item.type] }}</p>
+        <p v-else>
+          {{
+            professional_data[item.type] +
+            " - " +
+            professional_data[item.type_2]
+          }}
+        </p>
+      </div>
+
+      <div v-for="(item, i) in attendance_show" :key="i">
+        <label for="">{{ item.title }}</label>
+        <p v-if="item.type !== 'payment'">{{ attendance_data[item.type] }}</p>
+        <p v-else>
+          {{ attendance_data[item.type][0].type }}
+          <span v-if="attendance_data[item.type][0].type == 'Cartão de crédito'"
+            >Parcelamento em {{ attendance_data[item.type][0].options }}x sem
+            juros</span
+          >
+        </p>
+      </div>
+      <Alert v-if="show_alert" />
+      <button class="confirm col-12" @click="save" :disabled="validate_inputs">
+        CADASTRAR PROFESSIONAL
+      </button>
+
+      <button class="edit" @click="edit">Editar cadastro</button>
     </div>
 
-    <div v-for="(item, i) in attendance_show" :key="i">
-      <label for="">{{ item.title }}</label>
-      <p v-if="item.type !== 'payment'">{{ attendance_data[item.type] }}</p>
-      <p v-else>
-        {{ attendance_data[item.type][0].type }}
-        <span v-if="attendance_data[item.type][0].type == 'Cartão de crédito'"
-          >Parcelamento em {{ attendance_data[item.type][0].options }}x sem
-          juros</span
-        >
-      </p>
+    <div
+      class="d-none col-7 d-lg-flex justify-content-center align-items-center"
+    >
+      <img :src="require('@/assets/desktop-pagina-2.png')" alt="" />
     </div>
-    <Alert v-if="show_alert" />
-    <button class="confirm col-12" @click="save" :disabled="validate_inputs">
-      CADASTRAR PROFESSIONAL
-    </button>
-
-    <button class="edit" @click="edit">Editar cadastro</button>
   </div>
 </template>
 

@@ -1,37 +1,45 @@
 <template>
-  <div class="professional p-4">
-    <h1>Sobre o profissional</h1>
-    <h2>Detalhes do Professional</h2>
-    <div v-for="(item, i) in inputs_type" :key="i">
-      <Input
-        :type="item.type"
-        :label="item.label"
-        v-model:value="item.value"
-        :placeholder="item.placeholder"
-        :validation="item.validation"
-        @is_valid="is_valid_input(i, $event)"
-      />
+  <div class="professional col-lg-10 p-4">
+    <div class="col-lg-5">
+      <h1>Sobre o profissional</h1>
+      <h2>Detalhes do Professional</h2>
+      <div v-for="(item, i) in inputs_type" :key="i">
+        <Input
+          :type="item.type"
+          :label="item.label"
+          v-model:value="item.value"
+          :placeholder="item.placeholder"
+          :validation="item.validation"
+          @is_valid="is_valid_input(i, $event)"
+        />
+      </div>
+      <div class="region d-flex">
+        <Select
+          title="Estado*"
+          :list="states"
+          @selected="select_state"
+          :selected_option="selected_state"
+          class="col-6 pe-2"
+        />
+        <Select
+          class="col-6 ps-2"
+          title="Cidade*"
+          :list="cities[selected_state]"
+          @selected="select_city"
+          :selected_option="selected_city"
+        />
+      </div>
+      <Progress :current="1" :total="2" />
+      <button class="col-12" @click="save" :disabled="validate_inputs">
+        PRÓXIMO
+      </button>
     </div>
-    <div class="region d-flex">
-      <Select
-        title="Estado*"
-        :list="states"
-        @selected="select_state"
-        :selected_option="selected_state"
-        class="col-6 pe-2"
-      />
-      <Select
-        class="col-6 ps-2"
-        title="Cidade*"
-        :list="cities[selected_state]"
-        @selected="select_city"
-        :selected_option="selected_city"
-      />
+
+    <div
+      class="d-none col-7 d-lg-flex justify-content-center align-items-center"
+    >
+      <img :src="require('@/assets/desktop-pagina-1.png')" alt="" />
     </div>
-    <Progress :current="1" :total="2" />
-    <button class="col-12" @click="save" :disabled="validate_inputs">
-      PRÓXIMO
-    </button>
   </div>
 </template>
 
